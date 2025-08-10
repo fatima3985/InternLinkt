@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Company Dashboard - InternLinkt</title>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+  <!-- Loading Spinner -->
+  <div id="dashboard-loading" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; display: flex; align-items: center; justify-content: center; z-index: 9999;">
+    <div style="text-align: center;">
+      <div class="loader" style="margin: 0 auto 1rem;"></div>
+      <span style="color: #6e6e73; font-size: 1.1rem;">Loading your dashboard...</span>
+    </div>
+  </div>
+
+  <!-- Navigation -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <div class="nav-logo">
+        <i class="fas fa-link"></i>
+        <span>InternLinkt</span>
+      </div>
+      <div class="nav-links">
+        <span id="user-name">Loading...</span>
+        <button class="btn-secondary" onclick="logout()">
+          <i class="fas fa-sign-out-alt"></i>
+          Logout
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Dashboard Layout -->
+  <div class="dashboard" id="dashboard-content" style="display: none;">
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <div class="avatar" id="user-avatar">CD</div>
+      <div class="sidebar-name" id="sidebar-name">Company Name</div>
+      <nav class="sidebar-nav">
+        <a href="#dashboard" class="sidebar-link active" onclick="showSection('dashboard')">
+          <i class="fas fa-home"></i>
+          Dashboard
+        </a>
+        <a href="#internships" class="sidebar-link" onclick="showSection('internships')">
+          <i class="fas fa-briefcase"></i>
+          My Internships
+        </a>
+        <a href="#applications" class="sidebar-link" onclick="showSection('applications')">
+          <i class="fas fa-users"></i>
+          Applications
+        </a>
+        <a href="#profile" class="sidebar-link" onclick="showSection('profile')">
+          <i class="fas fa-building"></i>
+          Company Profile
+        </a>
+      </nav>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+      <!-- Dashboard Section -->
+      <section id="dashboard-section" class="dashboard-section">
+        <div class="section-header">
+          <h2>Welcome back!</h2>
+          <p>Here's an overview of your internship program</p>
+        </div>
+        
+        <div class="dashboard-stats">
+          <div class="stat-card">
+            <div class="stat-icon">
+              <i class="fas fa-briefcase"></i>
+            </div>
+            <div class="stat-info">
+              <span class="stat-number" id="total-internships">0</span>
+              <span class="stat-label">Active Internships</span>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon">
+              <i class="fas fa-file-alt"></i>
+            </div>
+            <div class="stat-info">
+              <span class="stat-number" id="total-applications">0</span>
+              <span class="stat-label">Total Applications</span>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon">
+              <i class="fas fa-clock"></i>
+            </div>
+            <div class="stat-info">
+              <span class="stat-number" id="pending-applications">0</span>
+              <span class="stat-label">Pending Review</span>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon">
+              <i class="fas fa-star"></i>
+            </div>
+            <div class="stat-info">
+              <span class="stat-number" id="shortlisted-applications">0</span>
+              <span class="stat-label">Shortlisted</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="dashboard-content">
+          <div class="content-grid">
+            <div class="content-card">
+              <h3>Recent Applications</h3>
+              <div id="recent-applications">
+                <p class="empty-state">No applications yet. Create your first internship!</p>
+              </div>
+            </div>
+            <div class="content-card">
+              <h3>Quick Actions</h3>
+              <div class="quick-actions">
+                <button class="btn btn-primary" onclick="createInternship()">
+                  <i class="fas fa-plus"></i>
+                  Create New Internship
+                </button>
+                <button class="btn btn-secondary" onclick="showSection('applications')">
+                  <i class="fas fa-eye"></i>
+                  Review Applications
+                </button>
+                <button class="btn btn-secondary" onclick="showSection('profile')">
+                  <i class="fas fa-edit"></i>
+                  Edit Company Profile
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Internships Section -->
+      <section id="internships-section" class="dashboard-section" style="display: none;">
+        <div class="section-header">
+          <h2>My Internships</h2>
+          <button class="btn btn-primary" onclick="createInternship()">
+            <i class="fas fa-plus"></i>
+            Create New Internship
+          </button>
+        </div>
+        
+        <div id="internships-container">
+          <div class="loading">
+            <div class="loader"></div>
+            <p>Loading internships...</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Applications Section -->
+      <section id="applications-section" class="dashboard-section" style="display: none;">
+        <div class="section-header">
+          <h2>Applications</h2>
+          <p>Review and manage internship applications</p>
+        </div>
+        
+        <div class="applications-filters">
+          <select id="internship-filter" class="input" onchange="filterApplications()">
+            <option value="">All Internships</option>
+          </select>
+          <select id="status-filter" class="input" onchange="filterApplications()">
+            <option value="">All Statuses</option>
+            <option value="Pending">Pending</option>
+            <option value="Shortlisted">Shortlisted</option>
+            <option value="Accepted">Accepted</option>
+            <option value="Rejected">Rejected</option>
+          </select>
+        </div>
+        
+        <div id="applications-container">
+          <div class="loading">
+            <div class="loader"></div>
+            <p>Loading applications...</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Profile Section -->
+      <section id="profile-section" class="dashboard-section" style="display: none;">
+        <div class="section-header">
+          <h2>Company Profile</h2>
+          <p>Manage your company information and branding</p>
+        </div>
+        
+        <div id="profile-container">
+          <div class="loading">
+            <div class="loader"></div>
+            <p>Loading profile...</p>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <!-- Create Internship Modal -->
+  <div id="internshipModal" class="modal">
+    <div class="modal-content large">
+      <div class="modal-header">
+        <h2 id="internship-modal-title">Create New Internship</h2>
+        <button class="modal-close" onclick="closeModal('internshipModal')">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="internshipForm" class="form">
+          <input type="hidden" id="internship-id" name="id">
+          <div class="form-row">
+            <div class="form-group">
+              <label>Internship Title</label>
+              <input type="text" name="title" required>
+            </div>
+            <div class="form-group">
+              <label>Location</label>
+              <input type="text" name="location" required>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Type</label>
+              <select name="type" required>
+                <option value="">Select Type</option>
+                <option value="on-site">On-site</option>
+                <option value="remote">Remote</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Duration</label>
+              <input type="text" name="duration" placeholder="e.g., 3 months">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Salary (Optional)</label>
+              <input type="text" name="salary" placeholder="e.g., $3000/month">
+            </div>
+            <div class="form-group">
+              <label>Application Deadline</label>
+              <input type="date" name="deadline" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Required Skills</label>
+            <input type="text" name="skills" placeholder="e.g., JavaScript, React, Python" required>
+          </div>
+          <div class="form-group">
+            <label>Description</label>
+            <textarea name="description" rows="6" placeholder="Describe the internship role, responsibilities, and what you're looking for..." required></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary btn-full">Save Internship</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Application Review Modal -->
+  <div id="applicationModal" class="modal">
+    <div class="modal-content large">
+      <div class="modal-header">
+        <h2>Application Review</h2>
+        <button class="modal-close" onclick="closeModal('applicationModal')">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div id="application-details">
+          <div class="loading">
+            <div class="loader"></div>
+            <p>Loading application details...</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Profile Edit Modal -->
+  <div id="profileModal" class="modal">
+    <div class="modal-content large">
+      <div class="modal-header">
+        <h2>Edit Company Profile</h2>
+        <button class="modal-close" onclick="closeModal('profileModal')">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="profileForm" class="form">
+          <div class="form-group">
+            <label>Company Name</label>
+            <input type="text" name="name" required>
+          </div>
+          <div class="form-group">
+            <label>Email</label>
+            <input type="email" name="email" required>
+          </div>
+          <div class="form-group">
+            <label>Description</label>
+            <textarea name="description" rows="4" placeholder="Tell us about your company..."></textarea>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Website</label>
+              <input type="url" name="website" placeholder="https://yourcompany.com">
+            </div>
+            <div class="form-group">
+              <label>Location</label>
+              <input type="text" name="location" placeholder="City, Country">
+            </div>
+          </div>
+          <button type="submit" class="btn btn-primary btn-full">Update Profile</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notifications -->
+  <div id="toast" class="toast"></div>
+
+  <script src="app.js"></script>
+  <script src="company_dashboard.js"></script>
+</body>
+</html> 

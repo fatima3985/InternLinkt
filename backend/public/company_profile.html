@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Company Profile - InternLinkt</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="dashboard">
+    <aside class="sidebar">
+      <div class="avatar" id="company-avatar">CO</div>
+      <div class="sidebar-name" id="sidebar-name">Company Name</div>
+      <nav>
+        <a href="company_dashboard.html" class="sidebar-link">Dashboard</a>
+        <a href="#" class="sidebar-link">My Internships</a>
+        <a href="#" class="sidebar-link">Applications</a>
+        <a href="#" class="sidebar-link active">Profile</a>
+        <a href="#" class="sidebar-link" id="logout-link">Logout</a>
+      </nav>
+    </aside>
+    <main class="main-content">
+      <h2>Edit Company Profile</h2>
+      <form id="company-profile-form" enctype="multipart/form-data">
+        <input type="text" name="name" placeholder="Company Name" required class="input">
+        <input type="email" name="email" placeholder="Email" required class="input">
+        <textarea name="description" placeholder="Description" class="input"></textarea>
+        <input type="file" name="logo" accept="image/*" class="input">
+        <button type="submit" class="btn">Save Changes</button>
+      </form>
+    </main>
+  </div>
+  <script src="app.js"></script>
+</body>
+</html> 

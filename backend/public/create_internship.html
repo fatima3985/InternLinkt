@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create Internship - InternLinkt</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="dashboard">
+    <aside class="sidebar">
+      <div class="avatar" id="company-avatar">CO</div>
+      <div class="sidebar-name" id="sidebar-name">Company Name</div>
+      <nav>
+        <a href="company_dashboard.html" class="sidebar-link">Dashboard</a>
+        <a href="#" class="sidebar-link">My Internships</a>
+        <a href="#" class="sidebar-link">Applications</a>
+        <a href="#" class="sidebar-link">Profile</a>
+        <a href="#" class="sidebar-link" id="logout-link">Logout</a>
+      </nav>
+    </aside>
+    <main class="main-content">
+      <h2>Create Internship</h2>
+      <form id="create-internship-form">
+        <input type="text" name="title" placeholder="Title" required class="input">
+        <input type="text" name="location" placeholder="Location" required class="input">
+        <select name="type" class="input" required>
+          <option value="">Type</option>
+          <option value="Remote">Remote</option>
+          <option value="On-site">On-site</option>
+        </select>
+        <input type="text" name="skills" placeholder="Required Skills (comma separated)" class="input">
+        <input type="text" name="salary" placeholder="Salary" class="input">
+        <input type="text" name="duration" placeholder="Duration" class="input">
+        <input type="date" name="deadline" placeholder="Deadline" class="input">
+        <textarea name="description" placeholder="Description" class="input"></textarea>
+        <button type="submit" class="btn">Create Internship</button>
+      </form>
+    </main>
+  </div>
+  <script src="app.js"></script>
+</body>
+</html> 
